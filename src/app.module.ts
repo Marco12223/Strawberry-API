@@ -9,6 +9,8 @@ import {JwtModule} from "@nestjs/jwt";
 import {jwtConstants} from "./auth/constants";
 import { GuildController } from './guild/guild.controller';
 import { GuildService } from './guild/guild.service';
+import { LangController } from './lang/lang.controller';
+import { LangService } from './lang/lang.service';
 
 @Module({
   imports: [
@@ -18,7 +20,7 @@ import { GuildService } from './guild/guild.service';
         signOptions: {expiresIn: '2h'}
       }),
   ],
-  controllers: [AppController, AuthController, GuildController],
-  providers: [AppService, PrismaService, AuthService, UsersService, GuildService],
+  controllers: [AppController, AuthController, GuildController, LangController],
+  providers: [AppService, PrismaService, AuthService, UsersService, GuildService, LangService],
 })
 export class AppModule {}
