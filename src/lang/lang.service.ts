@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {HttpStatus, Injectable} from '@nestjs/common';
 import {PrismaService} from "../prisma/prisma.service";
 
 @Injectable()
@@ -19,7 +19,7 @@ export class LangService {
 
     }
 
-    async getLanguageData(locale: string): Promise<{data: []}> {
+    async getLanguageData(locale: string): Promise<{}> {
 
         const endpoints = await this.getLanguageEndpoint();
         const endpoint = endpoints.endpoints.find(e => e.locale === locale);
@@ -38,6 +38,28 @@ export class LangService {
 
         const endpoints = await this.getLanguageEndpoint();
         return {locales: endpoints.endpoints.map(e => e.locale)}
+
+    }
+
+    async updateGuildLanguage(guildId: string, locale: string): Promise<{ message: string; statusCode: number }|{error: string, message: string, statusCode: number}> {
+
+        const availableLanguages = await this.getAvailableLanguages();
+        if (!availableLanguages.locales.includes(locale)) {
+            throw new Error("Invalid locale")
+        } else {
+
+            this.prismaService.guild.update({
+                where: {
+                    guildId: guildId
+                },
+                data: {
+                    language: locale
+                }
+            })
+
+            return { message: 'Language updated', statusCode: HttpStatus.OK };
+
+        }
 
     }
 
