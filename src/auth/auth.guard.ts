@@ -9,8 +9,7 @@ export class AuthGuard implements CanActivate {
 
   constructor(private jwtService: JwtService) {}
 
-  canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-
+  canActivate(context: ExecutionContext): boolean | Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
 
@@ -18,19 +17,14 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException('Unauthorized');
     }
 
-    try {
-      const payload = this.jwtService.verifyAsync(
-          token,
-          {
-            secret: jwtConstants.secret
-          });
-
-      request['user'] = payload;
-    } catch {
-      throw new UnauthorizedException('Unauthorized');
-    }
-    return true;
-
+    return this.jwtService.verifyAsync(token, { secret: jwtConstants.secret })
+        .then(payload => {
+          request['user'] = payload;
+          return true;
+        })
+        .catch(error => {
+          throw new UnauthorizedException('Unauthorized');
+        });
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
