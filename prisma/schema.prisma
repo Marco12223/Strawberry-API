@@ -14,15 +14,15 @@ datasource db {
 }
 
 model guild {
-  id       String   @id @default(cuid())
+  id       Int      @id @default(autoincrement())
   guildId  String   @unique
   features String[] @default([])
   language String   @default("en")
 }
 
 model apiUsers {
-  id        String   @id @default(cuid())
-  username  String
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
   password  String
   createdAt DateTime @default(now())
   lastUsed  DateTime @default(now())
