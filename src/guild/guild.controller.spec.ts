@@ -1,5 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { GuildController } from './guild.controller';
+import {Test, TestingModule} from '@nestjs/testing';
+import {GuildController} from './guild.controller';
 
 describe('GuildController', () => {
   let controller: GuildController;

@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import {Prisma} from '@prisma/client';
 
 export class Guild implements Prisma.guildCreateInput {
     features: Prisma.guildCreatefeaturesInput | string[];
