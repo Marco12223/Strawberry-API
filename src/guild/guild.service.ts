@@ -1,40 +1,43 @@
-import { Injectable } from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {PrismaService} from "../primsa/prisma.service";
+import {Prisma} from "@prisma/client";
 
 @Injectable()
 export class GuildService {
 
     constructor(private readonly prismaService: PrismaService) {}
 
-    async getGuild(id: number) {
-        return this.prismaService.guild.findUnique({
-            where: {
-                id: id
-            }
-        });
+    async create(data: Prisma.guildCreateInput) {
+        return this.prismaService.guild.create({ data });
     }
 
-    async createGuild(guild: any) {
-        return this.prismaService.guild.create({
-            data: guild
-        });
+    async get(where: Prisma.guildWhereUniqueInput) {
+        let guild = await this.prismaService.guild.findUnique({ where });
+        if(guild === null) {
+            throw new HttpException({status: HttpStatus.NOT_FOUND, error: 'Guild not found'}, HttpStatus.NOT_FOUND);
+        } else {
+            return guild
+        }
     }
 
-    async updateGuild(id: number, guild: any) {
-        return this.prismaService.guild.update({
-            where: {
-                id: id
-            },
-            data: guild
-        });
+    async delete(where: Prisma.guildWhereUniqueInput) {
+        let guild = await this.prismaService.guild.findUnique({ where });
+        if(guild === null) {
+            throw new HttpException({status: HttpStatus.NOT_FOUND, error: 'Guild not found'}, HttpStatus.NOT_FOUND);
+        } else {
+            await this.prismaService.guild.delete({ where })
+            return { message: 'Guild deleted', status: 200 };
+        }
     }
 
-    async deleteGuild(id: number) {
-        return this.prismaService.guild.delete({
-            where: {
-                id: id
-            }
-        });
+    async update(where: Prisma.guildWhereUniqueInput, data: Prisma.guildUpdateManyArgs) {
+        let guild = await this.prismaService.guild.findUnique({ where });
+        if(guild === null) {
+            throw new HttpException({status: HttpStatus.NOT_FOUND, error: 'Guild not found'}, HttpStatus.NOT_FOUND);
+        } else {
+            this.prismaService.guild.update({ where, data });
+            return { message: 'Guild updated', status: 200 };
+        }
     }
 
 }
