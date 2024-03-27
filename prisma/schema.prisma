@@ -19,3 +19,11 @@ model Guild {
   features String[] @default([])
   language String   @default("en")
 }
+
+model APIUsers {
+  id        String   @id @default(cuid())
+  username  String
+  password  String
+  createdAt DateTime @default(now())
+  lastUsed  DateTime @default(now())
+}
