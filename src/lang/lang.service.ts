@@ -34,4 +34,11 @@ export class LangService {
 
     }
 
+    async getAvailableLanguages(): Promise<{ locales: string[] }> {
+
+        const endpoints = await this.getLanguageEndpoint();
+        return {locales: endpoints.endpoints.map(e => e.locale)}
+
+    }
+
 }
