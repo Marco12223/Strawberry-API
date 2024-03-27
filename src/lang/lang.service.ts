@@ -1,4 +1,4 @@
-import {HttpStatus, Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {PrismaService} from "../prisma/prisma.service";
 
 @Injectable()
@@ -23,14 +23,20 @@ export class LangService {
 
         const endpoints = await this.getLanguageEndpoint();
         const endpoint = endpoints.endpoints.find(e => e.locale === locale);
-        const response = await fetch(endpoint.url, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
+        if(!endpoint) {
+            throw new HttpException({statusCode: HttpStatus.NOT_FOUND, error: 'Locale not found'}, HttpStatus.NOT_FOUND);
+        } else {
 
-        return response.json()
+            const response = await fetch(endpoint.url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+
+            return response.json()
+
+        }
 
     }
 
@@ -45,7 +51,7 @@ export class LangService {
 
         const availableLanguages = await this.getAvailableLanguages();
         if (!availableLanguages.locales.includes(locale)) {
-            throw new Error("Invalid locale")
+            throw new HttpException({statusCode: HttpStatus.NOT_FOUND, error: 'Locale not found'}, HttpStatus.NOT_FOUND);
         } else {
 
             await this.prismaService.guild.update({
