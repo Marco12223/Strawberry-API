@@ -6,10 +6,6 @@ export class GuildService {
 
     constructor(private readonly prismaService: PrismaService) {}
 
-    async getGuilds() {
-        return this.prismaService.guild.findMany();
-    }
-
     async getGuild(id: number) {
         return this.prismaService.guild.findUnique({
             where: {
