@@ -13,14 +13,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Guild {
+model guild {
   id       String   @id @default(cuid())
   guildId  String   @unique
   features String[] @default([])
   language String   @default("en")
 }
 
-model APIUsers {
+model apiUsers {
   id        String   @id @default(cuid())
   username  String
   password  String
