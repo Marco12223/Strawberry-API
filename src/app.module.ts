@@ -15,9 +15,10 @@ import {LangService} from './lang/lang.service';
 @Module({
   imports: [
       JwtModule.register({
-        global: true,
-        secret: jwtConstants.secret,
-        signOptions: {expiresIn: '2h'}
+          verifyOptions: {algorithms: ['HS256']},
+          global: true,
+          secret: jwtConstants.secret,
+          signOptions: {expiresIn: '2h'}
       }),
   ],
   controllers: [AppController, AuthController, GuildController, LangController],

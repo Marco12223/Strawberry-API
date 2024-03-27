@@ -1,4 +1,4 @@
-import {Body, Controller, Post} from '@nestjs/common';
+import {Body, Controller, Get, Post} from '@nestjs/common';
 import {AuthService} from "./auth.service";
 import {ApiBody, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 
@@ -16,6 +16,15 @@ export class AuthController {
     @ApiBody({schema: {example: {username: 'string', password: 'string'}}})
     login(@Body() body: {username: string, password: string}){
         return this.authService.signIn(body.username, body.password);
+    }
+
+    @Get('verify')
+    @ApiOperation({summary: 'Verify token', description: 'Verify token'})
+    @ApiResponse({status: 200, description: 'Token is valid', schema: {example: {valid: true}}})
+    @ApiResponse({status: 401, description: 'Token is invalid', schema: {example: {valid: false}}})
+    @ApiBody({schema: {example: {access_token: 'string'}}})
+    verify(@Body() body: {access_token: string}){
+        return this.authService.verify(body.access_token);
     }
 
 }
