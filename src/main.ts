@@ -13,7 +13,7 @@ async function bootstrap() {
       .setVersion(pack.version)
       .addServer('http://localhost:3000', 'Local environment')
       .addBearerAuth({
-        type: 'oauth2',
+        type: 'http',
         scheme: 'bearer',
         bearerFormat: 'JWT',
         in: 'header',
