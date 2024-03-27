@@ -8,8 +8,8 @@ export class UsersService {
 
     constructor(private readonly prismaService: PrismaService) {}
 
-    async findOne(username: Prisma.apiUsersFindUniqueArgs): Promise<Users|undefined> {
-        return this.prismaService.apiUsers.findUnique(username);
+    async findOne(username: Prisma.apiUsersWhereUniqueInput): Promise<Users|undefined> {
+        return this.prismaService.apiUsers.findUnique({where: username});
     }
 
 }
