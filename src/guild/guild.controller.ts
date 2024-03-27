@@ -1,7 +1,8 @@
-import {Controller, Delete, Get, Param, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, UseGuards} from '@nestjs/common';
 import {GuildService} from "./guild.service";
-import {ApiOperation, ApiParam, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AuthGuard} from "../auth/auth.guard";
+import {Prisma} from "@prisma/client";
 
 @ApiTags('Guild Management')
 @Controller('guild')
@@ -31,6 +32,17 @@ export class GuildController {
     @ApiParam({name: 'guildId', description: 'Guild ID', required: true, schema: {type: 'string'}})
     async delete(@Param('guildId') guildId: string){
         return this.guildService.delete({guildId: guildId});
+    }
+
+    @Post(':guildId')
+    @UseGuards(AuthGuard)
+    @ApiOperation({summary: 'Create guild', description: 'Create guild, IMPORTANT: The user must be logged in to access this endpoint'})
+    @ApiResponse({status: 201, description: 'Guild created', schema: {example: {guildId: 'string', language: 'string', features: ['string']}}})
+    @ApiResponse({status: 401, description: 'Unauthorized', schema: {example: {statusCode: 401, error: 'Unauthorized', message: "Unauthorized"}}})
+    @ApiResponse({status: 500, description: 'Internal Server Error', schema: {example: {statusCode: 500, error: 'Internal Server Error'}}})
+    @ApiBody({schema: {example: {guildId: 'string', language: 'string', features: ['string']}}})
+    async create(@Body() body: Prisma.guildCreateInput){
+        return this.guildService.create(body);
     }
 
 }
