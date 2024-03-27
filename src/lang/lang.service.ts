@@ -48,7 +48,7 @@ export class LangService {
             throw new Error("Invalid locale")
         } else {
 
-            this.prismaService.guild.update({
+            await this.prismaService.guild.update({
                 where: {
                     guildId: guildId
                 },
