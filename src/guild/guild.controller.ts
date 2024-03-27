@@ -1,6 +1,6 @@
-import {Controller, Get, Param, UseGuards} from '@nestjs/common';
+import {Controller, Delete, Get, Param, UseGuards} from '@nestjs/common';
 import {GuildService} from "./guild.service";
-import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiOperation, ApiParam, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AuthGuard} from "../auth/auth.guard";
 
 @ApiTags('Guild Management')
@@ -15,8 +15,22 @@ export class GuildController {
     @ApiResponse({status: 200, description: 'Guild found', schema: {example: {guildId: 'string', language: 'string', features: ['string']}}})
     @ApiResponse({status: 404, description: 'Guild not found', schema: {example: {statusCode: 404, error: 'Guild not found'}}})
     @ApiResponse({status: 401, description: 'Unauthorized', schema: {example: {statusCode: 401, error: 'Unauthorized', message: "Unauthorized"}}})
+    @ApiResponse({status: 500, description: 'Internal Server Error', schema: {example: {statusCode: 500, error: 'Internal Server Error'}}})
+    @ApiParam({name: 'guildId', description: 'Guild ID', required: true, schema: {type: 'string'}})
     async get(@Param('guildId') guildId: string){
         return this.guildService.get({guildId: guildId});
+    }
+
+    @Delete(':guildId')
+    @UseGuards(AuthGuard)
+    @ApiOperation({summary: 'Delete guild by guildId', description: 'Delete guild by guildId, IMPORTANT: The user must be logged in to access this endpoint'})
+    @ApiResponse({status: 200, description: 'Guild deleted', schema: {example: {message: 'Guild deleted', statusCode: 200}}})
+    @ApiResponse({status: 404, description: 'Guild not found', schema: {example: {statusCode: 404, error: 'Guild not found'}}})
+    @ApiResponse({status: 401, description: 'Unauthorized', schema: {example: {statusCode: 401, error: 'Unauthorized', message: "Unauthorized"}}})
+    @ApiResponse({status: 500, description: 'Internal Server Error', schema: {example: {statusCode: 500, error: 'Internal Server Error'}}})
+    @ApiParam({name: 'guildId', description: 'Guild ID', required: true, schema: {type: 'string'}})
+    async delete(@Param('guildId') guildId: string){
+        return this.guildService.delete({guildId: guildId});
     }
 
 }
