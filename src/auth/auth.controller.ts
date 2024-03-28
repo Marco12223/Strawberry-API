@@ -13,6 +13,7 @@ export class AuthController {
     @ApiOperation({summary: 'Login to the application', description: 'Login to the application, IMPORTANT: The user must be registered by an admin before logging in is possible to the application'})
     @ApiResponse({status: 201, description: 'User logged in successfully', schema: {example: {access_token: 'string'}}})
     @ApiResponse({status: 500, description: 'Internal server error', schema: {example: {statusCode: 500, message: 'Internal server error'}}})
+    @ApiResponse({status: 400, description: 'Bad Request', schema: {example: {statusCode: 400, error: 'Bad Request'}}})
     @ApiBody({schema: {example: {username: 'string', password: 'string'}}})
     login(@Body() body: {username: string, password: string}){
         return this.authService.signIn(body.username, body.password);
@@ -23,6 +24,7 @@ export class AuthController {
     @ApiResponse({status: 200, description: 'Token is valid', schema: {example: {valid: true}}})
     @ApiResponse({status: 401, description: 'Token is invalid', schema: {example: {valid: false}}})
     @ApiResponse({status: 500, description: 'Internal server error', schema: {example: {statusCode: 500, message: 'Internal server error'}}})
+    @ApiResponse({status: 400, description: 'Bad Request', schema: {example: {statusCode: 400, error: 'Bad Request'}}})
     @ApiBody({schema: {example: {access_token: 'string'}}})
     verify(@Body() body: {access_token: string}){
         return this.authService.verify(body.access_token);
