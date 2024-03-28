@@ -40,4 +40,13 @@ export class GuildService {
         }
     }
 
+    async exists(where: Prisma.guildWhereUniqueInput) {
+        let guild = await this.prismaService.guild.findUnique({ where });
+        if(guild === null) {
+            throw new HttpException({statusCode: HttpStatus.NOT_FOUND, error: 'Guild not exists'}, HttpStatus.NOT_FOUND);
+        } else {
+            return { message: 'Guild exists', statusCode: 200 };
+        }
+    }
+
 }
