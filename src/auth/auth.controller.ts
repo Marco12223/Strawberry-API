@@ -22,6 +22,7 @@ export class AuthController {
     @ApiOperation({summary: 'Verify token', description: 'Verify token'})
     @ApiResponse({status: 200, description: 'Token is valid', schema: {example: {valid: true}}})
     @ApiResponse({status: 401, description: 'Token is invalid', schema: {example: {valid: false}}})
+    @ApiResponse({status: 500, description: 'Internal server error', schema: {example: {statusCode: 500, message: 'Internal server error'}}})
     @ApiBody({schema: {example: {access_token: 'string'}}})
     verify(@Body() body: {access_token: string}){
         return this.authService.verify(body.access_token);
