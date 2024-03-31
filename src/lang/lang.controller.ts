@@ -33,6 +33,19 @@ export class LangController {
         return this.langService.getLanguageData(locale);
     }
 
+    @Get(':guildId')
+    @UseGuards(AuthGuard)
+    @ApiOperation({summary: 'Get guild language', description: 'Get guild language, IMPORTANT: The user must be logged in to access this endpoint'})
+    @ApiResponse({status: 200, description: 'Language found', schema: {example: {locale: 'string'}}})
+    @ApiResponse({status: 404, description: 'Guild not found', schema: {example: {error: 'Invalid guild', message: 'Guild not found', statusCode: 400}}})
+    @ApiResponse({status: 401, description: 'Unauthorized', schema: {example: {statusCode: 401, error: 'Unauthorized', message: "Unauthorized"}}})
+    @ApiResponse({status: 500, description: 'Internal Server Error', schema: {example: {statusCode: 500, error: 'Internal Server Error'}}})
+    @ApiResponse({status: 400, description: 'Bad Request', schema: {example: {statusCode: 400, error: 'Bad Request'}}})
+    @ApiParam({name: 'guildId', description: 'Guild ID', required: true, schema: {type: 'string'}})
+    async getGuildLanguage(@Param('guildId') guildId: string): Promise<{locale: string}|{error: string, message: string, statusCode: number}> {
+        return this.langService.getGuildLanguage(guildId);
+    }
+
     @Post(':guildId/:locale')
     @UseGuards(AuthGuard)
     @ApiOperation({summary: 'Update guild language', description: 'Update guild language, IMPORTANT: The user must be logged in to access this endpoint'})

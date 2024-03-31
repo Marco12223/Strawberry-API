@@ -69,4 +69,20 @@ export class LangService {
 
     }
 
+    async getGuildLanguage(guildId: string): Promise<{locale: string}> {
+
+        const guild = await this.prismaService.guild.findUnique({
+            where: {
+                guildId: guildId
+            }
+        })
+
+        if(!guild) {
+            throw new HttpException({statusCode: HttpStatus.NOT_FOUND, error: 'Guild not found'}, HttpStatus.NOT_FOUND);
+        } else {
+            return {locale: guild.language}
+        }
+
+    }
+
 }
