@@ -33,7 +33,7 @@ export class LangController {
         return this.langService.getLanguageData(locale);
     }
 
-    @Get(':guildId')
+    @Get('guild/:guildId')
     @UseGuards(AuthGuard)
     @ApiOperation({summary: 'Get guild language', description: 'Get guild language, IMPORTANT: The user must be logged in to access this endpoint'})
     @ApiResponse({status: 200, description: 'Language found', schema: {example: {locale: 'string'}}})
