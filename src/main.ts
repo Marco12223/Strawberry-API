@@ -5,10 +5,16 @@ import * as pack from '../package.json';
 import * as express from 'express';
 import * as vhost from 'vhost';
 import * as process from "process";
+import * as fs from "fs";
 
 async function bootstrap() {
 
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+      httpsOptions: {
+          key: fs.readFileSync(process.env.SSL_KEY_PATH),
+          cert: fs.readFileSync(process.env.SSL_CERT_PATH),
+      }
+  });
 
   const config = new DocumentBuilder()
       .setTitle(pack.name)
