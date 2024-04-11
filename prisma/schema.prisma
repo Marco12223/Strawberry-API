@@ -14,10 +14,9 @@ datasource db {
 }
 
 model guild {
-  id       Int      @id @default(autoincrement())
-  guildId  String   @unique
-  features String[] @default([])
-  language String   @default("en")
+  id       Int    @id @default(autoincrement())
+  guildId  String @unique
+  language String @default("en")
 }
 
 model apiUsers {
