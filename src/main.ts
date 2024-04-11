@@ -14,7 +14,8 @@ async function bootstrap() {
       .setTitle(pack.name)
       .setDescription(pack.description)
       .setVersion(pack.version)
-      .addServer('http://localhost:3000', 'Local environment')
+      .addServer('http://local.api.strawberry.marco1223.de:3500', 'Local environment')
+      .addServer('https://live.api.strawberry.marco1223.de', 'Production environment')
       .addBearerAuth({
         type: 'http',
         scheme: 'bearer',
@@ -33,7 +34,7 @@ async function bootstrap() {
   });
 
   express().use(vhost(process.env.SUBDOMAIN, app.getHttpAdapter().getInstance()));
-  await app.listen(3000);
+  await app.listen(3500);
 
 }
 bootstrap();
