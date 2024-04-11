@@ -2,6 +2,9 @@ import {NestFactory} from '@nestjs/core';
 import {AppModule} from './app.module';
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 import * as pack from '../package.json';
+import * as express from 'express';
+import * as vhost from 'vhost';
+import * as process from "process";
 
 async function bootstrap() {
 
@@ -29,6 +32,7 @@ async function bootstrap() {
     },
   });
 
+  express().use(vhost(process.env.SUBDOMAIN, app.getHttpAdapter().getInstance()));
   await app.listen(3000);
 
 }
