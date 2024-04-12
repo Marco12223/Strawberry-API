@@ -11,6 +11,7 @@ import {GuildController} from './guild/guild.controller';
 import {GuildService} from './guild/guild.service';
 import {LangController} from './lang/lang.controller';
 import {LangService} from './lang/lang.service';
+import { FeaturesModule } from './features/features.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import {LangService} from './lang/lang.service';
           secret: jwtConstants.secret,
           signOptions: {expiresIn: '2h'}
       }),
+      FeaturesModule,
   ],
   controllers: [AppController, AuthController, GuildController, LangController],
   providers: [AppService, PrismaService, AuthService, UsersService, GuildService, LangService],

@@ -9,19 +9,14 @@ import * as fs from "fs";
 
 async function bootstrap() {
 
-  const app = await NestFactory.create(AppModule, {
-      httpsOptions: {
-          key: fs.readFileSync(process.env.SSL_KEY_PATH),
-          cert: fs.readFileSync(process.env.SSL_CERT_PATH),
-      }
-  });
+  const app = await NestFactory.create(AppModule, {});
 
   const config = new DocumentBuilder()
       .setTitle(pack.name)
       .setDescription(pack.description)
       .setVersion(pack.version)
       .addServer('http://local.api.strawberry.marco1223.de:3500', 'Local environment')
-      .addServer('https://live.api.strawberry.marco1223.de', 'Production environment')
+      .addServer('http://live.api.strawberry.marco1223.de:3500', 'Production environment')
       .addBearerAuth({
         type: 'http',
         scheme: 'bearer',
