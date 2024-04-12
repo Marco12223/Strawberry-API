@@ -35,6 +35,20 @@ export class LogsController {
         return this.logsService.exists({guildId: guildId});
     }
 
+    @Get(':guildId/channel/:type')
+    @UseGuards(AuthGuard)
+    @ApiOperation({summary: 'Get logs channel by type', description: 'Get logs by type, IMPORTANT: The user must be logged in to access this endpoint'})
+    @ApiResponse({status: 200, description: 'Type found', schema: {example: {channelId: 'string'}}})
+    @ApiResponse({status: 404, description: 'Type not found', schema: {example: {statusCode: 404, error: 'Logs not found'}}})
+    @ApiResponse({status: 401, description: 'Unauthorized', schema: {example: {statusCode: 401, error: 'Unauthorized', message: "Unauthorized"}}})
+    @ApiResponse({status: 500, description: 'Internal Server Error', schema: {example: {statusCode: 500, error: 'Internal Server Error'}}})
+    @ApiResponse({status: 400, description: 'Bad Request', schema: {example: {statusCode: 400, error: 'Bad Request'}}})
+    @ApiParam({name: 'guildId', description: 'The guildId of the logs', required: true, schema: {type: 'string'}})
+    @ApiParam({name: 'type', description: 'The type of the logs', required: true, schema: {type: 'string'}})
+    async getChannel(@Param('guildId') guildId: string, @Param('type') type: string){
+        return this.logsService.getChannelByType({guildId: guildId}, type);
+    }
+
     @Get(':guildId/hasType/:type')
     @UseGuards(AuthGuard)
     @ApiOperation({summary: 'Check if logs has type', description: 'Check if logs has type, IMPORTANT: The user must be logged in to access this endpoint'})

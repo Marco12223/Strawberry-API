@@ -90,4 +90,25 @@ export class LogsService {
         return { hasType };
     }
 
+    async getChannelByType(where: Prisma.featureLogsWhereUniqueInput, type: string) {
+        const featureLog = await this.prismaService.featureLogs.findUnique({
+            where: where,
+            select: {
+                type: true
+            }
+        });
+
+        if (!featureLog || !featureLog.type) {
+            throw new HttpException('Type not found', HttpStatus.NOT_FOUND);
+        }
+
+        // JSON-Array aus dem String parsen
+        const typeArray = featureLog.type
+
+        // Überprüfen, ob der Typ existiert
+        const channel = typeArray.find(item => item.hasOwnProperty(type));
+
+        return { channelId: channel[type]};
+    }
+
 }
