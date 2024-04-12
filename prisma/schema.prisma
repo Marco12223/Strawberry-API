@@ -32,3 +32,8 @@ model featureLogs {
   channelId String
   type      String
 }
+
+model featureAutoRole {
+  guildId String   @unique
+  roleIds String[]
+}
