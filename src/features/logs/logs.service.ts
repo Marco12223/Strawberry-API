@@ -18,7 +18,8 @@ export class LogsService {
     }
 
     async addType(where: Prisma.featureLogsWhereUniqueInput, type: string){
-        if(await this.hasType(where, type)){
+        const hasType = await this.hasType(where, type);
+        if(hasType.hasType){
             throw new HttpException('Type already exists', HttpStatus.CONFLICT);
         } else {
             return this.prismaService.featureLogs.update({where: where, data: {type: {push: type}}});
@@ -26,7 +27,8 @@ export class LogsService {
     }
 
     async removeType(where: Prisma.featureLogsWhereUniqueInput, type: string) {
-        if(!await this.hasType(where, type)){
+        const hasType = await this.hasType(where, type);
+        if(!hasType.hasType){
             throw new HttpException('Type not found', HttpStatus.NOT_FOUND);
         } else {
             const featureLog = await this.prismaService.featureLogs.findUnique({
