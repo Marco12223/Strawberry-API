@@ -31,8 +31,7 @@ export class LogsController {
     @ApiResponse({status: 500, description: 'Internal Server Error', schema: {example: {statusCode: 500, error: 'Internal Server Error'}}})
     @ApiResponse({status: 400, description: 'Bad Request', schema: {example: {statusCode: 400, error: 'Bad Request'}}})
     @ApiParam({name: 'guildId', description: 'The guildId of the logs', required: true, schema: {type: 'string'}})
-    @ApiBody({schema: {example: {type: 'string', chanelId: 'string'}}})
-    async exists(@Param('guildId') guildId: string, @Body() body: {type: string, chanelId: string}){
+    async exists(@Param('guildId') guildId: string){
         return this.logsService.exists({guildId: guildId});
     }
 
