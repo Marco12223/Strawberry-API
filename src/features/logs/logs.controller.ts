@@ -49,7 +49,7 @@ export class LogsController {
         return this.logsService.hasType({guildId: guildId}, type);
     }
 
-    @Post(':guildId/:type')
+    @Post(':guildId/:type/:channelId')
     @UseGuards(AuthGuard)
     @ApiOperation({summary: 'Create logs', description: 'Create logs, IMPORTANT: The user must be logged in to access this endpoint'})
     @ApiResponse({status: 200, description: 'Logs created', schema: {example: {guildId: 'string', channelId: 'string', logs: ['string']}}})
@@ -58,8 +58,8 @@ export class LogsController {
     @ApiResponse({status: 400, description: 'Bad Request', schema: {example: {statusCode: 400, error: 'Bad Request'}}})
     @ApiParam({name: 'guildId', description: 'The guildId of the logs', required: true, schema: {type: 'string'}})
     @ApiParam({name: 'type', description: 'The type of the logs', required: true, schema: {type: 'string'}})
-    async addType(@Param('guildId') guildId: string, @Param('type') type: string){
-        return this.logsService.addType({guildId: guildId}, type);
+    async addType(@Param('guildId') guildId: string, @Param('type') type: string, @Param('channelId') channelId: string){
+        return this.logsService.addType({guildId: guildId}, type, channelId);
     }
 
     @Delete(':guildId/:type')
