@@ -1,7 +1,7 @@
-import {Body, Controller, Delete, Get, Param, Post, UseGuards} from '@nestjs/common';
+import {Controller, Delete, Get, Param, Post, UseGuards} from '@nestjs/common';
 import {LogsService} from "./logs.service";
 import {AuthGuard} from "../../auth/auth.guard";
-import {ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiOperation, ApiParam, ApiResponse, ApiTags} from "@nestjs/swagger";
 
 @Controller('features/logs')
 @ApiTags('GuildLogs Management')
