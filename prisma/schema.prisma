@@ -26,3 +26,9 @@ model apiUsers {
   createdAt DateTime @default(now())
   lastUsed  DateTime @default(now())
 }
+
+model featureLogs {
+  guildId   String @unique
+  channelId String
+  type      String
+}
