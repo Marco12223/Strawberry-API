@@ -28,7 +28,11 @@ model apiUsers {
 }
 
 model featureLogs {
-  guildId   String @unique
-  channelId String
-  type      String
+  guildId String @unique
+  type    Json[]
+}
+
+model featureAutoRole {
+  guildId String   @unique
+  roleIds String[]
 }
